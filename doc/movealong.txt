@@ -1,0 +1,164 @@
+*movealong.txt*  Context-aware motion commands
+
+Author:  Markus Koller <http://github.com/toupeira/>
+Version: 1.0
+License: Same terms as Vim itself (see |license|)
+
+This plugin is only available if 'compatible' is not set.
+
+CONTENTS                                        *movealong*
+
+Introduction       |movealong-introduction|
+Mappings           |movealong-mappings|
+Configuration      |movealong-configuration|
+Commands           |movealong-commands|
+
+------------------------------------------------------------------------------
+INTRODUCTION                                    *movealong-introduction*
+
+This plugin gives you commands to repeat a motion until either a specific
+word or syntax group is encountered, or an arbitrary expression returns true.
+It also skips over blank lines, punctuation and other syntax noise.
+
+The included default keymaps are disabled by default, you can enable them
+by putting the following into your |.vimrc|: >
+
+  let g:movealong_default_keys = 1
+<
+
+You can also override any of the default keys as follows: >
+
+  let g:movealong_default_maps = {
+    \ 'WordForward'  : '<Leader>w',
+    \ 'WordBackward' : '<Leader>b',
+  \ }
+<
+
+See |movealong-mappings| for a list of all the available mapping names.
+Your custom keys will be merged with the default keys as defined in
+`plugin/movealong.vim`.
+
+------------------------------------------------------------------------------
+MAPPINGS                                        *movealong-mappings*
+
+Normal mode mappings:
+
+<Plug>movealongWordForward                      *<Plug>movealongWordForward*
+<Space>
+        Move to the next useful word.
+
+<Plug>movealongWordBackward                     *<Plug>movealongWordBackward*
+<Backspace>
+        Move to the previous useful word.
+
+<Plug>movealongLineForward                      *<Plug>movealongLineForward*
+<Tab>
+        Move to the next useful line.
+
+<Plug>movealongLineBackward                     *<Plug>movealongLineBackward*
+<S-Tab>
+        Move to the previous useful line.
+
+<Plug>movealongIndentForward                    *<Plug>movealongIndentForward*
+<Leader>i
+        Move to the next line with the same indent.
+
+<Plug>movealongIndentBackward                   *<Plug>movealongIndentBackward*
+<Leader>I
+        Move to the previous line with the same indent.
+
+<Plug>movealongFunctionForward                  *<Plug>movealongFunctionForward*
+<Leader>f
+        Move to the next function declaration.
+
+<Plug>movealongFunctionBackward                 *<Plug>movealongFunctionBackward*
+<Leader>F
+        Move to the previous function declaration.
+
+        NOTE: Unfortunately there doesn't seem to be a common syntax group for
+        function declarations, so at the moment a hard-coded list of
+        filetype-specific groups is used. You can override this by setting
+        `g:movealong_function_syntax` or `b:movealong_function_syntax` to a |List|
+        of syntax group names.
+
+------------------------------------------------------------------------------
+CONFIGURATION                                   *movealong-configuration*
+
+g:movealong_default_keys                        *g:movealong_default_keys*
+        Enable default keymaps for normal mode (see |movealong-mappings|).
+
+        The default value is `0`.
+
+g:movealong_default_maps                        *g:movealong_default_maps*
+        A |Dict| of keys to be mapped to the provided default actions.
+
+        See |movealong-mappings| and `plugin/movealong.vim` for the default
+        values.
+
+The following variables can also be overriden with buffer-level variables
+for filetype-specific configuration:
+
+g:movealong_max_motions                         *g:movealong_max_motions*
+        Set an upper limit for how many times the motion will be repeated,
+        this is to avoid infinite loops and other bugs.
+
+        The default value is `1000`.
+
+g:movealong_skip_syntax                         *g:movealong_skip_syntax*
+        A |List| of syntax groups that should be skipped by default.
+
+        See `plugin/movealong.vim` for the default value.
+
+g:movealong_skip_words                          *g:movealong_skip_words*
+        A |List| of words that should be skipped by default.
+
+        See `plugin/movealong.vim` for the default value.
+
+------------------------------------------------------------------------------
+COMMANDS                                        *movealong-commands*
+
+:MovealongSyntax {motion} {syntax}              *MovealongSyntax*
+        Repeat the {motion} until any of the specified {syntax} groups
+        are encountered.
+
+        {motion}  A string of commands to be repeated
+        {syntax}  A string of comma-separated syntax groups
+
+        Use this command for line-wise motions.
+
+:MovealongSyntaxInline {motion} {syntax}        *MovealongSyntaxInline*
+        Same as |MovealongSyntax|, but use inline mode.
+
+        Use this command for in-line motions.
+
+:MovealongNoise                                 *MovealongNoise*
+        Skip over any syntax noise.
+
+:MovealongExpression {motion} {expr}            *MovealongExpression*
+        Repeat the {motion} until the {expr} returns true.
+
+        {expr}  A Vim expression, use backslashes for spaces.
+
+:MovealongExpressionInline {motion} {expr}      *MovealongExpressionInline*
+        Same as |MovealongExpression|, but use inline mode.
+
+:MovealongWord {motion} {words}                 *MovealongWord*
+        Repeat the {motion} until the inner word under the cursor
+        matches {words}.
+
+        {words}  A string of comma-separated words
+
+:MovealongWordInline {motion} {words}           *MovealongWordInline*
+        Same as |MovealongWord|, but use inline mode.
+
+:MovealongWhatsWrong                            *MovealongWhatsWrong*
+        Show a message explaining why the last command stopped.
+
+------------------------------------------------------------------------------
+ABOUT                                           *movealong-about*
+
+Grab the latest version or report a bug on GitHub:
+
+http://github.com/toupeira/vim-movealong
+
+ vim:tw=78:et:ft=help:norl:

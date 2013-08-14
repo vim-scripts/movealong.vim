@@ -1,0 +1,5 @@
+This is a mirror of http://www.vim.org/scripts/script.php?script_id=4691
+
+This plugin gives you commands to repeat a motion until either a specific word or syntax group is encountered, or an arbitrary expression returns true. It also skips over blank lines, punctuation and other syntax noise.
+
+See https://github.com/toupeira/vim-movealong for the latest version and more information.
